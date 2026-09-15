@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4151f3b495db5dd47bf1131795e6dd70, type: 3}
+  m_Name: speed1
+  m_EditorClassIdentifier: Assembly-CSharp::SkillData
+  type: 2
+  skillName: "\u30B9\u30D4\u30FC\u30C91"
+  damage: 0
+  effects:
+  - {fileID: 11400000, guid: 17565267b3666764d8f06a0d1bc13bf0, type: 2}
