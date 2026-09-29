@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1892511bf22cebc4bac762c1a12e1d26, type: 3}
   m_Name: New Enemy Data
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: sura
+  characterName: sura
   maxHp: 100
   attackPower: 10
   defensePower: 10

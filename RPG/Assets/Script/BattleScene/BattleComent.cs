@@ -1,56 +1,30 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class BattleComent : MonoBehaviour
 {
-    // 対象のテキスト
+    //基本ここでは文字を表示するだけ
+    [SerializeField] private BattleEventManager battleEventManager;
+
     [SerializeField] private TMP_Text _text;
 
-    // 次の文字を表示するまでの時間[s]
-    [SerializeField] private float _delayDuration = 0.1f;
-
-    private Coroutine _showCoroutine;
-
-    /// <summary>
-    /// 文字送り演出を表示する
-    /// </summary>
-    public void Show(string text)
+    [SerializeField] private float _delayDuration = 0.5f;
+    public async UniTask Show(string text)
     {
         _text.text = text;
 
-        // 前回の演出処理が走っていたら、停止
-        if (_showCoroutine != null)
-            StopCoroutine(_showCoroutine);
+        _text.maxVisibleCharacters = 0;
 
-        // １文字ずつ表示する演出のコルーチンを実行する
-        _showCoroutine = StartCoroutine(ShowCoroutine());
-    }
+        int length = _text.text.Length;
 
-    // １文字ずつ表示する演出のコルーチン
-    private IEnumerator ShowCoroutine()
-    {
-        // 待機用コルーチン
-        // GC Allocを最小化するためキャッシュしておく
-        var delay = new WaitForSeconds(_delayDuration);
-
-        // テキスト全体の長さ
-        var length = _text.text.Length;
-
-        // １文字ずつ表示する演出
-        for (var i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
-            // 徐々に表示文字数を増やしていく
             _text.maxVisibleCharacters = i + 1;
 
-            // 一定時間待機
-            yield return delay;
+            await UniTask.Delay((int)(_delayDuration * 1000),cancellationToken: this.GetCancellationTokenOnDestroy());
         }
 
-        // 演出が終わったら全ての文字を表示する
         _text.maxVisibleCharacters = length;
-
-        _showCoroutine = null;
     }
-
 }

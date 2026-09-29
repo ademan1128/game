@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
   type: 0
   skillName: "\u30D1\u30EF\u30FC\uFF11"
-  damage: 0
+  damage: 10
   effects:
   - {fileID: 11400000, guid: 17565267b3666764d8f06a0d1bc13bf0, type: 2}

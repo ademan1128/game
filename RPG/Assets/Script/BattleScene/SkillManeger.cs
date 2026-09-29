@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public class SkillManager : MonoBehaviour
 {
+    [Header("プレイヤーデータ")]
+    [SerializeField]private PlayerData playerData;
+
     [Header("すべてのスキル")]
     [SerializeField]
     private List<SkillData> allSkills = new List<SkillData>();
-
-    [Header("初期所持スキル")]
-    [SerializeField]
-    private List<SkillData> startSkills = new List<SkillData>();
 
     [Header("プレイヤーが所持しているスキル")]
     [SerializeField]
@@ -31,11 +30,12 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private List<int> selectedSkillIndex = new List<int>();
 
+    [SerializeField] private BattleEventManager battleEventManager;
 
     private void Start()
     {
         // 初期スキルを所持スキルに追加
-        foreach (SkillData skill in startSkills)
+        foreach (SkillData skill in playerData.startSkills)
         {
             AddOwnedSkill(skill);
         }
@@ -78,6 +78,14 @@ public class SkillManager : MonoBehaviour
         AddHandSkill(ownedSkills[index]);
     }
 
+    public void ResetSkill()
+    {
+        handSkills.Clear();
+        selectedSkill.Clear();
+        selectedSkillIndex.Clear();
+
+    }
+
     public void SelectSkill(int index)
     {
         if (selectedSkillIndex.Count >= 3)
@@ -105,6 +113,7 @@ public class SkillManager : MonoBehaviour
     {
         foreach (SkillData skill in selectedSkill)
         {
+            battleEventManager.CombatLog.OnNext($"使用する技: {skill.skillName} ダメージ: {skill.damage}");
             target.TakeDamage(skill.damage);
 
             foreach (SkillEffect effect in skill.effects)

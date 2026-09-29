@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySkillData
   type: 0
   skillName: Etechnique
-  damage: 0
+  damage: 10
   effects: []

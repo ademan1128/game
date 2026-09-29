@@ -18,10 +18,14 @@ public enum BattleState
 public class BattleSceneManager : MonoBehaviour
 {
     [SerializeField] private BattleComent battleComent;
+    [SerializeField] private BattleEventManager battleEventManager;
     [SerializeField] private SkillManager skillManager;
     [SerializeField] private Enemy enemy;
+    [SerializeField] private Player player;
+    [SerializeField] private EnemySkillManager enemySkillManager;
     [SerializeField] private SkillCompatibility skillCompatibility;
 
+    private bool isUsingCards;
 
     public BattleState state;
 
@@ -34,13 +38,16 @@ public class BattleSceneManager : MonoBehaviour
     {
         if (state == BattleState.Start)
         {
+            skillManager.ResetSkill();
             skillManager.DrawSkill();
             skillManager.DrawSkill();
             skillManager.DrawSkill();
             skillManager.DrawSkill();
             skillManager.DrawSkill();
+
+            enemySkillManager.SelectSkill();
             state = BattleState.SelectTurn;
-            Debug.Log("SelectTurnTurn");
+            battleEventManager.CombatLog.OnNext("SelectTurnTurn");
         }
         else if (state == BattleState.SelectTurn)
         {
@@ -78,11 +85,11 @@ public class BattleSceneManager : MonoBehaviour
                 if (skillManager.SelectedSkill.Count > 0)
                 {
                     state = BattleState.JudgementTurn;
-                    Debug.Log("JudgementTurn");
+                    battleEventManager.CombatLog.OnNext("JudgementTurn");
                 }
                 else
                 {
-                    Debug.Log("技を選択してください");
+                    battleEventManager.CombatLog.OnNext("技を選択してください");
                 }
             }
         }
@@ -90,24 +97,24 @@ public class BattleSceneManager : MonoBehaviour
         {
             // 勝敗判定
             SkillData playerSkill = skillManager.SelectedSkill[0];
-            EnemySkillData enemySkill =enemy.Data.enemySkillDatas[Random.Range(0, enemy.Data.enemySkillDatas.Length)];
+            EnemySkillData enemySkill = enemySkillManager.SelectedSkill;
             BattleResult result = skillCompatibility.CheckSkillType(playerSkill, enemySkill);
 
             if (result == BattleResult.Win)
             {
-                Debug.Log("プレイヤーの勝ち");
+                battleEventManager.CombatLog.OnNext("プレイヤーの勝ち");
+                battleEventManager.CombatLog.OnNext("Player's Turn");
                 state = BattleState.PlayerTurn;
-                Debug.Log("Player's Turn");
             }
             else if (result == BattleResult.Lose)
             {
-                Debug.Log("敵の勝ち");
+                battleEventManager.CombatLog.OnNext("敵の勝ち");
                 state = BattleState.EnemyTurn;
-                Debug.Log("Enemy's Turn");
+                battleEventManager.CombatLog.OnNext("Enemy's Turn");
             }
             else
             {
-                Debug.Log("引き分け");
+                battleEventManager.CombatLog.OnNext("引き分け");
                 state = BattleState.DrawTurn;
 
             }
@@ -115,16 +122,17 @@ public class BattleSceneManager : MonoBehaviour
         else if (state == BattleState.PlayerTurn)
         {
             // プレイヤーのターン
-            UsePlayerCards().Forget();
-            state = BattleState.Start;
+            if (!isUsingCards)
+            {
+                UsePlayerCards().Forget();
+            }
         }
         else if (state == BattleState.EnemyTurn)
         {
             // 敵のターン
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            if (!isUsingCards)
             {
-                state = BattleState.Start;
-                Debug.Log("Reset");
+                UseEnemyCard().Forget();
             }
         }
         else if (state == BattleState.DrawTurn)
@@ -133,21 +141,32 @@ public class BattleSceneManager : MonoBehaviour
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 state = BattleState.Start;
-                Debug.Log("Reset");
+                battleEventManager.CombatLog.OnNext("Reset");
             }
         }
 
         else if (state == BattleState.BattleEnd)
         {
             // バトル終了
-
         }
     }
 
+
     private async UniTask UsePlayerCards()
     {
+        isUsingCards = true;
         await skillManager.UseCard(enemy);
+        battleEventManager.CombatLog.OnNext("カード使用終了");
+        isUsingCards = false;
+        state = BattleState.Start;
+    }
 
-        Debug.Log("カード使用終了");
+    private async UniTask UseEnemyCard()
+    {
+        isUsingCards = true;
+        await enemySkillManager.EnemyUseCard(player, enemySkillManager.SelectedSkill);
+        battleEventManager.CombatLog.OnNext("敵のカード使用終了");
+        isUsingCards = false;
+        state = BattleState.Start;
     }
 }
