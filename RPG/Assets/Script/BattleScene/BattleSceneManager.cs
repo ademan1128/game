@@ -24,6 +24,7 @@ public class BattleSceneManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private EnemySkillManager enemySkillManager;
     [SerializeField] private SkillCompatibility skillCompatibility;
+    [SerializeField] private CardSpawner cardSpawner;
 
     private bool isUsingCards;
 
@@ -44,6 +45,7 @@ public class BattleSceneManager : MonoBehaviour
             skillManager.DrawSkill();
             skillManager.DrawSkill();
             skillManager.DrawSkill();
+            cardSpawner.SpawnCards();
 
             enemySkillManager.SelectSkill();
             state = BattleState.SelectTurn;

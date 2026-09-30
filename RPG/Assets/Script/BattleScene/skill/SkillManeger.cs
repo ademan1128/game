@@ -19,11 +19,12 @@ public class SkillManager : MonoBehaviour
     [Header("現在使用可能なスキル")]
     [SerializeField]
     private List<SkillData> handSkills = new List<SkillData>();
+    public List<SkillData> HandSkills => handSkills;
+
 
     [Header("使う技")]
-    [SerializeField]
-    private List<SkillData> selectedSkill = new List<SkillData>();
-    //ここで選択した技を外部から参照できるようにするためのプロパティを追加
+    [SerializeField]private List<SkillData> selectedSkill = new List<SkillData>();
+
     public List<SkillData> SelectedSkill => selectedSkill;
 
     [Header("選択した技のインデックスリスト")]
