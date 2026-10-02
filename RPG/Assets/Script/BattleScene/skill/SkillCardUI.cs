@@ -11,4 +11,6 @@ public class SkillCardUI : MonoBehaviour
         skillNameText.text = skill.skillName;
         damageText.text = skill.damage.ToString();
     }
+
+   
 }
