@@ -172,7 +172,6 @@ MonoBehaviour:
   cardParent: {fileID: 1824636993}
   startPosition: {x: -300, y: -150}
   spacing: 150
-  cardindex: 0
 --- !u!1 &272246533
 GameObject:
   m_ObjectHideFlags: 0

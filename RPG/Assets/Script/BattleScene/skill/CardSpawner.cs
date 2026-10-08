@@ -10,7 +10,6 @@ public class CardSpawner : MonoBehaviour
     [SerializeField] private Vector2 startPosition;
     [SerializeField] private float spacing = 100f;
 
-    [SerializeField] private int cardindex = 0;
     public void SpawnCards()
     {
         for (int i = 0; i < skillManager.HandSkills.Count; i++)
@@ -19,14 +18,11 @@ public class CardSpawner : MonoBehaviour
 
             SkillCardUI card = Instantiate(cardPrefab, cardParent);
 
-            // カードの位置を設定
             RectTransform rectTransform = card.GetComponent<RectTransform>();
 
             rectTransform.anchoredPosition = startPosition + new Vector2(i * spacing, 0);
-            cardindex ++;
-            Debug.Log(cardindex);
 
-            card.SetCard(skill);
+            card.SetCard(skill, i, skillManager);
         }
     }
 
