@@ -5,6 +5,7 @@ public class SkillCardUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text skillNameText;
     [SerializeField] private TMP_Text damageText;
+    [SerializeField] private BattleSceneManager battlescenemanager;
 
     private SkillManager skillManager;
     private int cardIndex;
@@ -32,4 +33,16 @@ public class SkillCardUI : MonoBehaviour
         }
     }
 
+    public void DestoryCard()
+    {
+        Destroy(gameObject);
+    }
+
+    private void Update()
+    {
+        if(battlescenemanager.state == BattleState.JudgementTurn)
+        {
+            DestoryCard();
+        }
+    }
 }
