@@ -38,11 +38,4 @@ public class SkillCardUI : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void Update()
-    {
-        if(battlescenemanager.state == BattleState.JudgementTurn)
-        {
-            DestoryCard();
-        }
-    }
 }

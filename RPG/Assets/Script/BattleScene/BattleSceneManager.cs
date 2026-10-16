@@ -25,6 +25,7 @@ public class BattleSceneManager : MonoBehaviour
     [SerializeField] private EnemySkillManager enemySkillManager;
     [SerializeField] private SkillCompatibility skillCompatibility;
     [SerializeField] private CardSpawner cardSpawner;
+    [SerializeField] private SkillCardUI skillcardUI;
 
     private bool isUsingCards;
 
@@ -88,6 +89,7 @@ public class BattleSceneManager : MonoBehaviour
                 {
                     state = BattleState.JudgementTurn;
                     battleEventManager.CombatLog.OnNext("JudgementTurn");
+                    
                 }
                 else
                 {
