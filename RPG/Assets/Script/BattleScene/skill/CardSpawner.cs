@@ -6,6 +6,8 @@ public class CardSpawner : MonoBehaviour
     [SerializeField] private SkillCardUI cardPrefab; // カードのプレハブ
     [SerializeField] private Transform cardParent; // カードを配置する親オブジェクト
     [SerializeField] private CardUIManager cardUImanager;
+    [SerializeField] private BattleSceneManager battlescenemanager;
+
 
     [Header("カードの配置")]
     [SerializeField] private Vector2 startPosition;
@@ -26,7 +28,7 @@ public class CardSpawner : MonoBehaviour
 
             rectTransform.anchoredPosition = startPosition + new Vector2(i * spacing, 0);
 
-            card.SetCard(skill, i, skillManager);
+            card.SetCard(skill, i, skillManager, battlescenemanager);
         }
     }
 

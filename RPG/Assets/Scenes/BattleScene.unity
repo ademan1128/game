@@ -171,6 +171,7 @@ MonoBehaviour:
   cardPrefab: {fileID: -9208367515348624248, guid: 30b64633f02cb104cbe56379d02f2faf, type: 3}
   cardParent: {fileID: 1824636993}
   cardUImanager: {fileID: 1824636994}
+  battlescenemanager: {fileID: 1478655984}
   startPosition: {x: -300, y: -150}
   spacing: 150
 --- !u!1 &272246533
